@@ -1,10 +1,11 @@
 class FloorCreator {
-
-    constructor(floorNumber) {
-        this.floorNumber = floorNumber
-        this.passengers = []
-        this.upButton = false
-        this.downButton = false
+    create({floorNumber}) {
+        return {
+            floorNumber,
+            passengers: [],
+            upButton: false,
+            downButton: false
+        }
     }
 }
 

@@ -1,7 +1,9 @@
 class ElevatorCreator {
-    constructor(floorCount) {
-        this.floorCount = floorCount
-        this.currentFloor = 1
+    create({floorCount}) {
+        return {
+            floorCount,
+            currentFloor: 0
+        }
     }
 }
 
