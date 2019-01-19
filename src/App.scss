@@ -1,0 +1,41 @@
+@import "/node-modules/modern-normalize/modern-normalize.css";
+@import "/node-modules/reset-css/reset-css.css";
+
+body {
+    background-color: #000;
+    color:#fff;
+
+    .world {
+        height:100vh;
+        width:100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        #building {
+            width:100%;
+            max-width: 400px;
+            border:5px solid #ffffff;
+            position: relative;
+        }
+
+        .floor {
+            height:60px;
+            border-bottom:1px dotted #fff;
+
+            &:last-child {
+                border-bottom:none;
+            }
+        }
+
+        .elevator {
+            height:60px;
+            width:40px;
+            border:2px solid #fff;
+            position:absolute;
+            bottom:0;
+            left:100px;
+        }
+
+    }
+}

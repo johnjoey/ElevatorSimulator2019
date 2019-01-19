@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import Building from './components/building/Building';
+import Floor from './components/floor/Floor';
+import Elevator from './components/elevator/Elevator';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      floors: [
+        {number: 3, upButtonPressed: false, downButtonPressed: false},
+        {number: 2, upButtonPressed: false, downButtonPressed: false},
+        {number: 1, upButtonPressed: false, downButtonPressed: false},
+      ],
+      elevator: {
+        currentFloor: 1, 
+      }
+    }
+  }
+
+
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="world">
+          <Building>
+            {this.state.floors.map(floor => {
+              return (<Floor key={floor.number} floor={floor} />)
+            })}
+            <Elevator/>
+          </Building>
+        </div>
       </div>
     );
   }
