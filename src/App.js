@@ -4,19 +4,20 @@ import Building from './components/building/Building';
 import Floor from './components/floor/Floor';
 import Elevator from './components/elevator/Elevator';
 
+import FloorCreator from './library/floor.js' 
+import ElevatorCreator from './library/elevator.js';
+
 class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       floors: [
-        {number: 3, upButtonPressed: false, downButtonPressed: false},
-        {number: 2, upButtonPressed: false, downButtonPressed: false},
-        {number: 1, upButtonPressed: false, downButtonPressed: false},
+        new FloorCreator(3),
+        new FloorCreator(2),
+        new FloorCreator(1),
       ],
-      elevator: {
-        currentFloor: 1, 
-      }
+      elevator: new ElevatorCreator(3)
     }
   }
 
@@ -28,9 +29,9 @@ class App extends Component {
         <div className="world">
           <Building>
             {this.state.floors.map(floor => {
-              return (<Floor key={floor.number} floor={floor} />)
-            })}
-            <Elevator/>
+              return (<Floor key={floor.floorNumber} floor={floor} />)
+            })} 
+            <Elevator elevator={this.state.elevator}/>
           </Building>
         </div>
       </div>

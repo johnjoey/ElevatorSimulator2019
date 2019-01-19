@@ -4,7 +4,7 @@ export default class Floor extends Component {
   render() {
     return (
       <div className="floor">
-        {this.props.floor.number}
+        {this.props.floor.floorNumber}
       </div>
     )
   }
