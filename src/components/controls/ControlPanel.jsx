@@ -2,24 +2,25 @@ import React, { Component } from 'react'
 
 export default class ControlPanel extends Component {
 
-  addPassengerToFloor() {
-      let randomFloor = Math.floor(Math.random() * this.props.floorCount)
-      let randomDirection = ''
-      if(randomFloor+1 === this.props.floorCount) {
-        randomDirection = 'down'
-      } else if (randomFloor === 0) {
-        randomDirection = 'up'
-      } else {
-        randomDirection = (Math.random < 0.5) ? 'up' : 'down'
-      }
+  constructor(props) {
+    super(props)
+    this.state = {
+      running:false
+    }
+  }
       
-      this.props.eventEmitter.emit('floor-button-pressed', {floorNumber:randomFloor, direction:randomDirection})
-  }  
+  toggleSimulation() {
+    let event = (this.state.running) ? 'stop' : 'start'
+    this.setState({running: !this.state.running})
+    this.props.eventEmitter.emit(event)
+    console.log()
+  }
+  
 
   render() {
     return (
       <div className="controls">
-        <button onClick={() => {this.addPassengerToFloor()}} >Add passenger</button>
+        <button onClick={() => {this.toggleSimulation()}}>{(this.state.running) ? 'stop' : 'start'}</button>
       </div>
     )
   }
