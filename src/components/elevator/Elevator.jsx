@@ -10,7 +10,7 @@ export default class Elevator extends Component {
         return (
             <div style={{bottom: this.props.elevator.currentFloor*60+'px'}} className="elevator">
                 {this.props.elevator.passengers.map((passenger, index) => {
-                    return (<Passenger key={index}/>)
+                    return (<Passenger key={index} identifier={passenger}/>)
                 })}
             </div>
         )

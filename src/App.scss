@@ -35,8 +35,19 @@ body {
                         border-bottom:none;
                     }
 
-                    .delivered {
-                        float:right;
+                    .passenger {
+                        display: inline-flex;
+                        flex-direction: column;
+                        align-items: center;
+                        margin:1px;
+
+                        &.delivered {
+                            float:right;
+                        }
+
+                        span {
+                            margin-bottom:4px;
+                        }
                     }
                 }
         

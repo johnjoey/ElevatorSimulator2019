@@ -105,10 +105,13 @@ class App extends Component {
     let elevator = this.state.elevator
 
     let remaining = elevator.passengers.filter((passenger) => {
+      return (passenger !== floorNumber)
+    })
+    let newDelivered = elevator.passengers.filter((passenger) => {
       return (passenger === floorNumber)
     })
 
-    floors[floorNumber].delivered += elevator.passengers.length - remaining.length
+    floors[floorNumber].delivered = floors[floorNumber].delivered.concat(newDelivered)
     elevator.passengers = remaining
 
     this.setState({
@@ -131,9 +134,7 @@ class App extends Component {
         min = 0
         max = floorNumber-1
       }
-      let destination = _.random(min,max)
-      console.log(`floor: ${floorNumber}, min: ${min}, max: ${max}, destination: ${destination},`)
-      return destination
+      return _.random(min,max)
     })
     
     floors[floorNumber].passengers = []
