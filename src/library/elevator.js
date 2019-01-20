@@ -3,6 +3,8 @@ class ElevatorCreator {
         return {
             floorCount,
             currentFloor: 0,
+            targetFloor: 0,
+            moving:false,
             passengers: []
         }
     }
