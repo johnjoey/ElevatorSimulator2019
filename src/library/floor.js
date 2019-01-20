@@ -3,6 +3,7 @@ class FloorCreator {
         return {
             floorNumber,
             passengers: [],
+            delivered: [],
             upButton: false,
             downButton: false
         }

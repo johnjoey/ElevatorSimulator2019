@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Passenger from '../passenger/Passenger';
 
 export default class Elevator extends Component {
 
@@ -8,7 +9,9 @@ export default class Elevator extends Component {
     render() {
         return (
             <div style={{bottom: this.props.elevator.currentFloor*60+'px'}} className="elevator">
-                {this.props.elevator.currentFloor}
+                {this.props.elevator.passengers.map((passenger, index) => {
+                    return (<Passenger key={index}/>)
+                })}
             </div>
         )
     }
