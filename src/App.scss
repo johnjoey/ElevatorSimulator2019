@@ -58,6 +58,37 @@ body {
                     position:absolute;
                     bottom:0;
                     left:100px;
+
+                    .ding {
+                        position: absolute;
+                        top:-19px;
+                    }
+
+                    .door {
+                        height:60px;
+                        width:18px;
+                        border:1px solid #fff;
+                        position: absolute;
+                        top:0;
+
+                        &--left {
+                            left:0;
+                        }
+                        &--right {
+                            right:0;
+                        }
+                        &--left {
+                            &.open {
+                                left:-15px;
+                            }
+                        }
+                        &--right {
+                            &.open {
+                                right:-15px;
+                            }
+                        }
+                        
+                    }
                 }
             }
     

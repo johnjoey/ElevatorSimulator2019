@@ -59,10 +59,14 @@ class App extends Component {
       this.elevator.moving = false
       this.ejectPassengersFromElevator()
       this.getPassengersInElevator()
+      this.elevatorQueue = this.elevatorQueue.filter((items) => {
+        return items.floorNumber === this.elevator.currentFloor
+      })
     })
 
     this.eventEmitter.addListener('elevator-passing-floor', ({floorNumber, direction}) => {
-      if(this.elevatorQueue.indexOf({floorNumber, direction}) === -1) {
+      let res = this.elevatorQueue.find(o => o.floorNumber === floorNumber)
+      if(res !== undefined) {
         this.eventEmitter.emit('elevator-stopped-at-floor')
       }
     })
@@ -78,20 +82,19 @@ class App extends Component {
 
   update() {
     // FIRST, ACT UPON STATE CHANGED IN PREVIOUS "FRAME"
-    if(!this.elevator.moving) {
+    this.addPassengerToFloor()
+
+    if(this.elevator.moving) {
+      this.moveElevator()
+    } else {
       if(this.elevator.targetFloor !== this.elevator.currentFloor) {
         this.elevator.moving = true
-        this.moveElevator()
       } else if(this.elevatorQueue.length !== 0) {
-        let floorRequest = this.elevatorQueue.pop()
+        let floorRequest = this.elevatorQueue.shift()
         this.elevator.targetFloor = floorRequest.floorNumber
         this.elevator.moving = true
-        this.moveElevator()
       }
     }
-
-    this.moveElevator()
-    this.addPassengerToFloor()
 
     // THEN, UPDATE STATE WITH CHANGES FROM THIS FRAME
     this.setState({
@@ -151,7 +154,7 @@ class App extends Component {
       let min, max
       if(direction === 'up') {
         min = floorNumber+1
-        max = this.floors.length
+        max = this.floors.length-1
       } else {
         min = 0
         max = floorNumber-1
