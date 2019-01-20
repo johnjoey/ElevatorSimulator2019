@@ -16,11 +16,8 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-
     this.elevatorCreator = new ElevatorCreator()
     this.floorCreator = new FloorCreator()
-    
-
     this.state = {
       floors: [
         this.floorCreator.create({floorNumber: 0}),
@@ -35,8 +32,36 @@ class App extends Component {
     this.eventEmitter = new EventEmitter()
 
     this.eventEmitter.addListener('floor-button-pressed', ({floorNumber, direction}) => {
-      this.addPassengerToFloor({floorNumber:floorNumber, direction: direction})
+      this.addPassengerToFloor({floorNumber: floorNumber, direction: direction})
       this.goToFloor(floorNumber)
+    })
+
+    this.eventEmitter.addListener('stopped-at-floor', ({floorNumber}) => {
+      this.getPassengersInElevator({floorNumber: floorNumber})
+    })
+  }
+
+  getPassengersInElevator({floorNumber}) {
+    this.floors = this.state.floors
+    this.elevator = this.state.elevator
+
+    this.elevator.passengers = this.floors[floorNumber].passengers.map((direction) => {
+      let min, max
+      if(direction === 'up') {
+        min = floorNumber
+        max = this.floors.length
+      } else {
+        min = 0
+        max = this.floors.length
+      }
+      return Math.floor(Math.random * (max - min) + min)
+    })
+
+    this.floors[floorNumber].passengers = []
+
+    this.setState({
+      floors: this.floors,
+      elevator: this.elevator
     })
   }
 

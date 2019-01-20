@@ -2,7 +2,8 @@ class ElevatorCreator {
     create({floorCount}) {
         return {
             floorCount,
-            currentFloor: 0
+            currentFloor: 0,
+            passengers: []
         }
     }
 }
