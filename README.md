@@ -2,7 +2,13 @@
 
 This is an attempt at this elevator themed kata: [https://gist.github.com/mattflo/4669508] built using Reactjs
 
-## 1. Breaking problem down
+## Getting started
+* install nodejs
+* download repo
+* run `npm i`
+* run `npm start`
+
+##  Breaking problem down
 * an elevator responds to calls containing a source floor and direction
     * elevator.goToFloor(floorNumber: int)
     * app needs stack containing requests: {sourceFloor: int, direction: string}
@@ -24,5 +30,14 @@ This is an attempt at this elevator themed kata: [https://gist.github.com/mattfl
 * you may implement DING!
 * there can be more than one elevator
     * come back to this last...
+
+## Issues with implementation
+I initially thought Reactjs would be great for implementing this Kata, however due to my inexperience I ran into some unforseen issues:
+* native react does not support changing complicated state well.
+* all state had to be stored and changed in parent 
+* Couldn't encapsulte behaviour within objects as any changes to state wouldn't trigger render(); defeating one of the main features of react
+* The main App component because quite monolithic due to the above making it difficult keep track of elevator logic
+
+I shot myself in the foot a little by choosing to build this in a framework I'm still getting to grips with. 
 
 
