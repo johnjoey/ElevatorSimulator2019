@@ -36,8 +36,8 @@ I initially thought Reactjs would be great for implementing this Kata, however d
 * native react does not support changing complicated state well.
 * all state had to be stored and changed in parent 
 * Couldn't encapsulte behaviour within objects as any changes to state wouldn't trigger render(); defeating one of the main features of react
-* The main App component because quite monolithic due to the above making it difficult keep track of elevator logic
+* The main App component became quite monolithic due to the above making it difficult keep track of elevator logic
 
-I shot myself in the foot a little by choosing to build this in a framework I'm still getting to grips with. 
+I shot myself in the foot a little by choosing to build this in a framework I'm still getting to grips with. :(
 
 

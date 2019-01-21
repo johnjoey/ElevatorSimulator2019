@@ -32,11 +32,17 @@ class App extends Component {
       ],
       elevator: this.elevatorCreator.create({floorCount: 6}),
     }
+    // TMP STATE TO MODIFY TO SIMPLIFY UPDATING COMPONENT STATE
     this.elevator = this.state.elevator
     this.floors = this.state.floors
+
     this.elevatorQueue = []
   }
 
+  /**
+   * Original idea was to encapsulate elevator and floor behavior within their components
+   * and emit events to tell parent to modify their state
+   */
   componentWillMount() {
     this.eventEmitter = new EventEmitter()
 
@@ -48,17 +54,11 @@ class App extends Component {
       this.stop()
     })
 
-    this.eventEmitter.addListener('floor-button-pressed', ({floorNumber, direction}) => {
-      // VALIDATE FLOOR BUTTON PRESSES
-      if(this.elevatorQueue.indexOf({floorNumber, direction}) === -1) {
-        this.elevatorQueue.push({floorNumber, direction})
-      }
-    })
-
     this.eventEmitter.addListener('elevator-stopped-at-floor', () => {
       this.elevator.moving = false
       this.ejectPassengersFromElevator()
       this.getPassengersInElevator()
+      // TODO: fix bug causing queue to lose requests that are still valid
       this.elevatorQueue = this.elevatorQueue.filter((items) => {
         return items.floorNumber === this.elevator.currentFloor
       })
@@ -83,13 +83,16 @@ class App extends Component {
   update() {
     // FIRST, ACT UPON STATE CHANGED IN PREVIOUS "FRAME"
     this.addPassengerToFloor()
+    console.log(this.elevatorQueue)
 
     if(this.elevator.moving) {
       this.moveElevator()
     } else {
       if(this.elevator.targetFloor !== this.elevator.currentFloor) {
+        // IF ELEVATOR HAS A DESTINATION SET IT MOVING
         this.elevator.moving = true
       } else if(this.elevatorQueue.length !== 0) {
+        // ELSE IF ELEVATOR HAS QUEUED REQUESTS SET DESTINATION 
         let floorRequest = this.elevatorQueue.shift()
         this.elevator.targetFloor = floorRequest.floorNumber
         this.elevator.moving = true
@@ -99,7 +102,7 @@ class App extends Component {
     // THEN, UPDATE STATE WITH CHANGES FROM THIS FRAME
     this.setState({
       elevator: this.elevator,
-      floors: this.floors
+      floors: this.floors 
     })
   }
 
@@ -116,7 +119,9 @@ class App extends Component {
       }
     }
   }
-
+  /**
+   * RANDOMLY ADD A PASSENGER TO A FLOOR, GIVE IT A DIRECTION
+   */
   addPassengerToFloor() {
     let randomFloor = Math.floor(Math.random() * this.floors.length)
     let randomDirection = ''
@@ -129,8 +134,9 @@ class App extends Component {
     }
   
     this.floors[randomFloor].passengers.push(randomDirection)
-
-    this.eventEmitter.emit('floor-button-pressed', {floorNumber:randomFloor, direction:randomDirection})
+    if(this.elevatorQueue.indexOf({floorNumber:randomFloor, direction:randomDirection}) === -1) {
+      this.elevatorQueue.push({floorNumber:randomFloor, direction:randomDirection})
+    }
   }
 
   ejectPassengersFromElevator() {
@@ -166,15 +172,14 @@ class App extends Component {
     this.elevator.passengers = this.elevator.passengers.concat(boarding)
 
     _.each(boarding, (passenger) => {
-      this.goToFloor(passenger)
+      this.goToFloor(passenger, undefined)
     })
   }
 
-  goToFloor(floorNumber) {
-    // TODO: move elevator state changes to loop() function and make this add requests to a queue handled in said loop
-    // TODO: move elevator floor by floor and call passing-floor event
-    if(this.elevatorQueue.indexOf({floorNumber}) === -1) {
-      this.elevatorQueue.push({floorNumber, undefined})
+
+  goToFloor(floorNumber, direction) {
+    if(undefined === this.elevatorQueue.find(o => o.floorNumber === floorNumber && o.direction === direction)) {
+      this.elevatorQueue.push({floorNumber:floorNumber, direction:direction})
     }
   }
 
