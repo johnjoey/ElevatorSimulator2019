@@ -134,9 +134,7 @@ class App extends Component {
     }
   
     this.floors[randomFloor].passengers.push(randomDirection)
-    if(this.elevatorQueue.indexOf({floorNumber:randomFloor, direction:randomDirection}) === -1) {
-      this.elevatorQueue.push({floorNumber:randomFloor, direction:randomDirection})
-    }
+    this.goToFloor(randomFloor, randomDirection)
   }
 
   ejectPassengersFromElevator() {
@@ -179,7 +177,12 @@ class App extends Component {
 
   goToFloor(floorNumber, direction) {
     if(undefined === this.elevatorQueue.find(o => o.floorNumber === floorNumber && o.direction === direction)) {
-      this.elevatorQueue.push({floorNumber:floorNumber, direction:direction})
+      if(direction === undefined) {
+        this.elevatorQueue.unshift({floorNumber:floorNumber, direction:direction})
+      } else {
+        this.elevatorQueue.push({floorNumber:floorNumber, direction:direction})
+      }
+      
     }
   }
 
